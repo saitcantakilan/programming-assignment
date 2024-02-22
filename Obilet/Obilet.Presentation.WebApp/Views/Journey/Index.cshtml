@@ -1,0 +1,51 @@
+﻿@using Obilet.Core.Models.BusJourneys
+@model IEnumerable<BusJourneyModel>
+@{
+    ViewData["Title"] = "Bilet Bul";
+}
+@section Header
+{
+    <div class="d-flex flex-row p-1 font-opensans">
+        <a href="@Url.Action("Index", "Home")" class="pl-2 pr-2 me-5 text-white">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+        <div class="text-left text-white d-flex flex-column">
+            <span class="fw-bold"> @ViewBag.OriginLocation - @ViewBag.DestinationLocation </span>
+            <span class="grande text-center fw-normal mt-1"> @ViewBag.DepartureDate </span>
+        </div>
+    </div>
+}
+
+
+<div class="d-flex flex-column font-opensans">
+    @foreach (var busJourney in Model)
+    {
+        <div class="d-flex flex-column p-2 mb-3 list-item position-relative">
+            <div class="d-flex justify-content-between">
+                <div class="d-flex text-primary">
+                    <div class="d-flex flex-column text-center pr-2 me-2">
+                        <span class="tall fw-normal">KALKIŞ</span>
+                        <span class="venti fw-semibold"> @busJourney.JourneyDetail.Departure.ToString("HH:mm") </span>
+                    </div>
+                    <div class="d-flex mb-1 align-items-end">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                    <div class="d-flex flex-column text-center pl-2 ms-2">
+                        <span class="tall">VARIŞ</span>
+                        <span class="venti fw-semibold"> @busJourney.JourneyDetail.Arrival.ToString("HH:mm") </span>
+                    </div>
+                </div>
+                <div class="d-flex text-primary mt-2 pb-2">
+                    <span class="d-flex badge bg-danger fw-semibold pl-3 pr-3 pt-2 grande">
+                        @busJourney.JourneyDetail.InternetPrice.ToString("#.00") @busJourney.JourneyDetail.Currency
+                    </span>
+                </div>
+            </div>
+            <div class="text-left d-flex text-secondary fw-normal mt-1">
+                @busJourney.JourneyDetail.Origin - @busJourney.JourneyDetail.Destination
+            </div>
+            <a class="stretched-link" target="_blank" asp-action="RedirectExternal" asp-controller="Journey" asp-route-originId="@busJourney.OriginLocationId"
+               asp-route-destinationId="@busJourney.DestinationLocationId" asp-route-journeyId="@busJourney.Id" asp-route-departureDate="@busJourney.JourneyDetail.Departure.ToString("yyyy-MM-dd")"></a>
+        </div>
+    }
+</div>
